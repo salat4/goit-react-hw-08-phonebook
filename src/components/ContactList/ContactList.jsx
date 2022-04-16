@@ -1,17 +1,17 @@
-const ContactList = (contacts) => (
+const ContactList = ({ contacts, filterName, deleteContacts }) => (
   <div>
-    {console.log(contacts)}
-    {/* <ul>
-      {/* {function getContacts(contact) {
-        return [contact.id, contact.name].join(" ");
-      }}
-      {contacts.map(this.getContacts)} */}
-
     <ul>
-      {contacts.map(
-        (contact) => console.log(contact)
-        // <li></li>
-      )}
+      {contacts
+        .filter((contact) => filterName(contact.name))
+        .map((contact) => (
+          <li>
+            {/* {console.log(index)} */}
+            {contact.name}: {contact.number}
+            <button id={contact.id} onClick={deleteContacts}>
+              delete
+            </button>
+          </li>
+        ))}
     </ul>
   </div>
 );
