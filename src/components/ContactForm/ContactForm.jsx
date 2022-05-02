@@ -1,19 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect } from 'react';
 import Notiflix from "notiflix";
 import ContactList from "../ContactList/ContactList";
 import Filter from "../Filter/Filter";
 import { nanoid } from "nanoid";
 
 const ContactForm = () => {
-const loginInputId = nanoid();
-  const [contacts, setContacts] = useState([{ id: "id-1", name: "Rosie Simpson", number: "459-12-56" },
-      { id: "id-2", name: "Hermione Kline", number: "443-89-12" },
-      { id: "id-3", name: "Eden Clements", number: "645-17-79" },
-      { id: "id-4", name: "Annie Copeland", number: "227-91-26" },]);
+  const loginInputId = nanoid();
+  const LS_KEY = "reader_contact";
+  const [contacts, setContacts] = useState(()=>{
+  const saved = localStorage.getItem(LS_KEY);
+  const initialValue = JSON.parse(saved);
+  return initialValue || "";
+});
   const [name, setName] = useState('');
   const [tel, setTel] = useState('');
-  const [filter,setFilter] = useState("")
+  const [filter, setFilter] = useState("")
 
+
+  useEffect(() => {
+    localStorage.setItem(LS_KEY, JSON.stringify(contacts));
+  },[contacts])
 
   const handelChangeName = (e) => {
     setName(e.target.value)
@@ -37,7 +43,15 @@ const loginInputId = nanoid();
   const handelFilter = (e) => {
   setFilter(e.target.value)
 } 
-  
+  const deleteContacts = (e) => {
+    let deleteCont = [...contacts]
+    for (let i = 0; i < contacts.length; i++){
+        if (e.target.id === contacts[i].id) {
+         deleteCont.splice(i, 1);
+      } 
+    }
+    setContacts(deleteCont)
+  }  
   
   return (
     <div>
@@ -72,7 +86,7 @@ const loginInputId = nanoid();
       </form>
       <h2>Contacts</h2>
       <Filter filter={filter} handelFilter={handelFilter}/>
-      <ContactList contacts={contacts} filter={filter}/>
+      <ContactList contacts={contacts} filter={filter} deleteContacts={ deleteContacts}/>
     </div>
 )}
   
