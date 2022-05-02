@@ -1,32 +1,21 @@
-import { Component } from "react";
+import { useState, useEffect } from "react";
 import { nanoid } from "nanoid";
 import ContactForm from "./ContactForm/ContactForm";
-import ContactList from "./ContactList/ContactList";
-import Filter from "./Filter/Filter";
 import Notiflix from "notiflix";
-export class App extends Component {
-  loginInputId = nanoid();
+export const App = () =>  {
+ const loginInputId = nanoid();
 
-  state = {
-    contacts: [
-      { id: "id-1", name: "Rosie Simpson", number: "459-12-56" },
-      { id: "id-2", name: "Hermione Kline", number: "443-89-12" },
-      { id: "id-3", name: "Eden Clements", number: "645-17-79" },
-      { id: "id-4", name: "Annie Copeland", number: "227-91-26" },
-    ],
-    filter: "",
-  };
-  handelChangeName = (e) => {
+ const handelChangeName = (e) => {
     this.setState({
       name: e.target.value,
     });
   };
-  handelChangeTel = (e) => {
+const  handelChangeTel = (e) => {
     this.setState({
       number: e.target.value,
     });
   };
-  saveChange = () => {
+const  saveChange = () => {
     const name = this.state.name;
     const number = this.state.number;
     let cont = this.state.contacts;
@@ -49,20 +38,16 @@ export class App extends Component {
       number: "",
     });
   };
-  handleFilter = (e) => {
+ const handleFilter = (e) => {
     this.setState({
       filter: e.target.value,
     });
   };
-  filterName = (name) => {
+ const filterName = (name) => {
     return name.toLowerCase().indexOf(this.state.filter.toLowerCase()) !== -1;
   };
-  deleteContacts = (e) => {
-    // console.log(cont);
-    // console.log(index);
-    console.log(e.target.id);
+ const deleteContacts = (e) => {
     let deleteCont = [...this.state.contacts];
-
     for (let i = 0; i < this.state.contacts.length; i++) {
       if (e.target.id === this.state.contacts[i].id) {
         deleteCont.splice(i, 1);
@@ -70,28 +55,11 @@ export class App extends Component {
     }
     this.setState({ contacts: deleteCont });
   };
-  render() {
-    const contacts = this.state.contacts;
-    const filter = this.state.filter;
     return (
       <div>
         <h1>PhoneBook</h1>
-        <ContactForm
-          handelChangeName={this.handelChangeName}
-          handelChangeTel={this.handelChangeTel}
-          name={contacts}
-          tel={contacts}
-          saveChange={this.saveChange}
-        />
-
-        <h2>Contacts</h2>
-        <Filter filter={filter} handelFilter={this.handleFilter} />
-        <ContactList
-          contacts={contacts}
-          filterName={this.filterName}
-          deleteContacts={this.deleteContacts}
-        />
+        <ContactForm/>
       </div>
     );
   }
-}
+

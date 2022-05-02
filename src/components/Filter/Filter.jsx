@@ -1,6 +1,5 @@
-const Filter = ({ handelFilter, filter }) => (
+const Filter = ({ filter,handelFilter }) => (
   <div>
-    {/* <p>Find contacts by name</p> */}
     <input
       type="text"
       name="filter"
