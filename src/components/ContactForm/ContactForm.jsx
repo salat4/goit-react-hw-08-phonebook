@@ -8,10 +8,10 @@ const ContactForm = () => {
   const loginInputId = nanoid();
   const LS_KEY = "reader_contact";
   const [contacts, setContacts] = useState(()=>{
-  const saved = localStorage.getItem(LS_KEY);
-  const initialValue = JSON.parse(saved);
-  return initialValue || "";
-});
+    const saved = localStorage.getItem(LS_KEY);
+    const initialValue = JSON.parse(saved);
+    return initialValue || [];
+  });
   const [name, setName] = useState('');
   const [tel, setTel] = useState('');
   const [filter, setFilter] = useState("")
