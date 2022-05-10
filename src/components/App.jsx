@@ -4,8 +4,14 @@ import Filter from "./Filter/Filter";
 import React, { useState , useEffect } from 'react';
 import Notiflix from "notiflix";
 import { nanoid } from "nanoid";
+import { useSelector, useDispatch } from "react-redux";
+import {add,remove,filter} from "../redux/store"
 
 export const App = () =>  {
+const dispatch = useDispatch();
+const contacts1 = useSelector(state =>state.contacts)
+const filterValue = useSelector(state => state.filterValue)
+
   const loginInputId = nanoid();
   const LS_KEY = "reader_contact";
   const [contacts, setContacts] = useState(()=>{
@@ -13,7 +19,7 @@ export const App = () =>  {
     const initialValue = JSON.parse(saved);
     return initialValue || [];
   });
-  const [filter, setFilter] = useState("")
+  // const [filter, setFilter] = useState("")
 
   useEffect(() => {
     localStorage.setItem(LS_KEY, JSON.stringify(contacts));
@@ -25,10 +31,13 @@ export const App = () =>  {
         return Notiflix.Notify.info(`${e.target.elements.name.value} is already is contacts`);
       }
     }  
+    dispatch(add({id : loginInputId,name : e.target.elements.name.value , number : e.target.elements.number.value}))
     setContacts([...contacts,{id : loginInputId,name : e.target.elements.name.value , number : e.target.elements.number.value}])
 }
   const handelFilter = (e) => {
-  setFilter(e.target.value)
+    // console.log(e.target.value)
+    // console.log(dispatch(filter(e.target.value)))
+    dispatch(filter(e.target.value)) 
 } 
   const deleteContacts = (e) => {
     let deleteCont = [...contacts]
@@ -45,8 +54,8 @@ export const App = () =>  {
         <h1>PhoneBook</h1>
         <ContactForm saveChange ={saveChange}/>
         <h2>Contacts</h2>
-      <Filter filter={filter} handelFilter={handelFilter}/>
-      <ContactList contacts={contacts} filter={filter} deleteContacts={ deleteContacts}/>
+      <Filter filter={filterValue} handelFilter={handelFilter}/>
+      <ContactList contacts={contacts} filter={filterValue} deleteContacts={ deleteContacts}/>
       </div>
     );
   }
