@@ -1,49 +1,33 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { createSlice  } from "@reduxjs/toolkit";
+import { configureStore, combineReducers } from '@reduxjs/toolkit';
+import { persistStore, persistReducer, FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER, } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+import itemsReducer from './action/contacts-reducer';
 
-
-const LS_KEY = "reader_contact";
-
-const contactsSlice = createSlice({
-    name:'contacts',
-    initialState:()=>{
-        const saved = localStorage.getItem(LS_KEY);
-        const initialValue = JSON.parse(saved);
-        return initialValue || []
-      },
-      reducers: {
-          add(state, action){
-              state.push(action.payload)
-          },
-          remove(state,action){
-              return state.filter(item => item.id !== action.payload)
-          },
-        //   filter(state,action){
-        //     return action.payload.toLowerCase().indexOf(action.payload.toLowerCase()) !== -1;
-        //   }
-         
-      }
-});
-const filterSlice = createSlice({
-    name : 'filter',
-    initialState:'',
-    reducers:{
-        filter(state,action){
-            state = `${action.payload}` 
-            // state = state + action.payload
-          }
-    }
+const rootReducer = combineReducers({
+  contacts: itemsReducer,
 })
 
+const persistConfig = {
+  key: 'root',
+  storage,
+}
 
+const persistedReducer = persistReducer(persistConfig, rootReducer)
 
-// console.log(contactsSlice)
-export const { add  , remove } = contactsSlice.actions;
-export const {filter} = filterSlice.actions;
-
-export const store = configureStore({
-    reducer:{
-        contacts: contactsSlice.reducer,
-        filterValue: filterSlice.reducer,
-    },
-},window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+const store = configureStore({
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
+    }),
+  devTools: process.env.NODE_ENV === 'development',
+});
+export const persistor = persistStore(store);
+export default store;
