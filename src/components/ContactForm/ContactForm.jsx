@@ -1,25 +1,4 @@
-import { useSelector, useDispatch } from "react-redux";
-import Notiflix from "notiflix";
-import action from "../../redux/action/action"
-import { nanoid } from "nanoid";
-
-const ContactForm = () => {
-  const dispatch = useDispatch();
-  const loginInputId = nanoid();
-
-  const contacts = useSelector(state =>state.contacts.items)
-
-  const saveChange = (e) => {
-    e.preventDefault()
-    for (let i = 0; i < contacts.length; i++){
-      if (contacts[i].name === e.target.elements.name.value) {
-        return Notiflix.Notify.info(`${e.target.elements.name.value} is already is contacts`);
-      }
-    }  
-    dispatch(action.addContacts({id : loginInputId,name : e.target.elements.name.value , number : e.target.elements.number.value}))
-
-    e.target.reset();
-}
+const ContactForm = ({saveChange}) => {
   return (
     <div>
     <form onSubmit={saveChange}>

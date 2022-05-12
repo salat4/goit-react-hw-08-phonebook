@@ -1,15 +1,4 @@
-import { useSelector,useDispatch } from "react-redux";
-import action from "../../redux/action/action"
-
-
-const Filter = () => {
-const filterValue = useSelector(state => state.filterValue)
-const dispatch = useDispatch();
-
-const handelFilter = (e) => {
-  return dispatch(action.filterName(e.currentTarget.value))
-} 
-
+const Filter = ({handelFilter,filterValue}) => {
 return(
   <div>
   <input
