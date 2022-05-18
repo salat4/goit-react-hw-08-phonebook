@@ -1,17 +1,17 @@
 
 const ContactList = ({filter,contacts,deleteContacts}) => {
-  const filterName = contacts.filter((contact) => {
-    return contact.name.toLowerCase().includes(filter.toLowerCase())
-  })
+  // const filterName = contacts.filter((contact) => {
+  //   return contact.name.toLowerCase().includes(filter.toLowerCase())
+  // })
    return (
     <div>
      <ul>
-        {filterName.map((contact) => (
+        {contacts.map((contact) => (
             <li key = {contact.id}>
               {contact.name}: {contact.number}
-              <button id={contact.id} onClick={deleteContacts}>
+              {/* <button id={contact.id} onClick={deleteContacts}>
                 delete
-              </button>
+              </button> */}
             </li>
           ))
            } 

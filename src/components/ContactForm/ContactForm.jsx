@@ -1,7 +1,7 @@
-const ContactForm = ({saveChange}) => {
+const ContactForm = ({handleAddContacts}) => {
   return (
     <div>
-    <form onSubmit={saveChange}>
+    <form onSubmit={handleAddContacts }>
     <label>
       Name
       <input
