@@ -1,4 +1,4 @@
-const ContactForm = ({handleAddContacts,isLoading}) => {
+const ContactForm = ({handleAddContacts}) => {
   const onSubmit =  async (values)=>{
     await handleAddContacts(values);
   }

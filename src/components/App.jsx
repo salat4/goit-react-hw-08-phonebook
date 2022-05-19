@@ -7,8 +7,8 @@ import { useState } from "react";
 
 export const App = () =>  {
   const [filter, setFilter] = useState("")
-  const [addContacts, result] =useAddContactsMutation()
-  const { data, error, isLoading } = useGetContactsQuery()
+  const [addContacts] =useAddContactsMutation()
+  const { data, isLoading } = useGetContactsQuery()
   const handleAddContacts  = async (values) => {
     values.preventDefault();
     for (let i = 0 ; i < data.length ; i++  ){
@@ -22,13 +22,10 @@ export const App = () =>  {
               }
     }
     try{
-      if (result.isUninitialized){
-        await addContacts({name:values.target.elements.name.value,number:values.target.elements.number.value})
-      } 
-      else{
-        console.log(error)
-      }
-    
+  
+       return await addContacts({name:values.target.elements.name.value,number:values.target.elements.number.value})
+      
+  
     }
     catch(error){
       console.log(error)
