@@ -1,13 +1,10 @@
 const ContactForm = ({handleAddContacts,isLoading}) => {
-
-
   const onSubmit =  async (values)=>{
     await handleAddContacts(values);
   }
   return (
     <div>
-       <form onSubmit={onSubmit}>
-         
+       <form onSubmit={onSubmit}>       
        <label>
          Name
          <input

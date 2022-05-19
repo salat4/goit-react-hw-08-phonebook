@@ -1,19 +1,20 @@
 import { useDeleteContactsMutation } from "redux/ContactsSlice";
 const ContactList = ({filter,contacts,}) => {
-  const [deleteContacts,reset]= useDeleteContactsMutation();
+  const [deleteContacts,result]= useDeleteContactsMutation();
   const filterName = (name) => {
     return name.toLowerCase().indexOf(filter.toLowerCase()) !== -1;
     }  
    return (
     <div>
      <ul>
-     {contacts.filter((contact)=>filterName(contact[0]))
-          .map((contact) => (
+     {contacts.filter((contact)=>filterName(contact.name))
+        .map((contact) => (
             <li key = {contact.id}>
-              {contact[0]}: {contact[1]}
-              <button onClick={()=>deleteContacts(contact.id)}>
+              {contact.name}: {contact.phone}
+              {result.isUninitialized && <button onClick={()=>deleteContacts(contact.id)}>
                 delete
-              </button>
+              </button>}
+             
             </li>
           ))
            } 
