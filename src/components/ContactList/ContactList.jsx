@@ -1,17 +1,19 @@
-
-const ContactList = ({filter,contacts,deleteContacts}) => {
-  // const filterName = contacts.filter((contact) => {
-  //   return contact.name.toLowerCase().includes(filter.toLowerCase())
-  // })
+import { useDeleteContactsMutation } from "redux/ContactsSlice";
+const ContactList = ({filter,contacts,}) => {
+  const [deleteContacts,reset]= useDeleteContactsMutation();
+  const filterName = (name) => {
+    return name.toLowerCase().indexOf(filter.toLowerCase()) !== -1;
+    }  
    return (
     <div>
      <ul>
-        {contacts.map((contact) => (
+     {contacts.filter((contact)=>filterName(contact[0]))
+          .map((contact) => (
             <li key = {contact.id}>
-              {contact.name}: {contact.number}
-              {/* <button id={contact.id} onClick={deleteContacts}>
+              {contact[0]}: {contact[1]}
+              <button onClick={()=>deleteContacts(contact.id)}>
                 delete
-              </button> */}
+              </button>
             </li>
           ))
            } 

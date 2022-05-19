@@ -1,10 +1,10 @@
-const Filter = ({handelFilter,filterValue}) => {
+const Filter = ({handelFilter,filter}) => {
 return(
   <div>
   <input
     type="text"
     name="filter"
-    value={filterValue}
+    value={filter}
     onChange={handelFilter}
   ></input>
 </div>
