@@ -1,0 +1,55 @@
+import { useAddUserMutation } from "redux/ContactsSlice";
+import { setToken,setUser } from "redux/ContactsSlice";
+
+// import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+export const Register = () =>{
+    // const {data} = useGetAuthQuery()
+    const [auth] = useAddUserMutation()
+    // const [token,setToken] =useState('')
+    // const [user,setUser] = useState([])
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const handleRegistration = async(values)=>{
+        values.preventDefault();
+        try{
+            const data =  await auth({
+            
+                
+                name:values.target.elements.name.value,
+                email:values.target.elements.email.value,
+                password:values.target.elements.password.value,
+                
+            })
+            const {token,user}=data.data;
+            dispatch(setToken(token))
+            dispatch(setUser(user.name))
+            navigate('/')
+        }
+        catch(error){
+            console.log(error)
+        }
+
+        finally {
+            values.target.reset();
+          }
+    }
+    return (
+        <div>
+            <h1>Registeration</h1>
+            <form onSubmit={handleRegistration}>
+                <label>
+                    <p>Name</p>
+                    <input type="name" name="name" required></input>
+                    <p >Email</p>
+                    <input type = "email" name="email" required></input>
+                    <p>Password</p>
+                    <input type="password" name="password" required></input>
+                </label>
+                <button type="submit">Registration</button>
+            </form>
+           
+        </div>
+    )
+}

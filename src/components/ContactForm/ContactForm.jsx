@@ -1,4 +1,39 @@
-const ContactForm = ({handleAddContacts}) => {
+import { useGetContactsQuery } from "redux/ContactsSlice";
+import { useAddContactsMutation } from "redux/ContactsSlice";
+import Notiflix from "notiflix";
+
+const ContactForm = () => {
+  const [addContacts] =useAddContactsMutation()
+
+  const { data, isLoading } = useGetContactsQuery()
+const handleAddContacts = async(values) =>{
+  values.preventDefault();
+
+  if (isLoading === false){
+    for (let i = 0 ; i < data.length ; i++  ){
+      if (data[i].name === values.target.elements.name.value) {
+                return( 
+                
+                  Notiflix.Notify.info(`${values.target.elements.name.value} is already is contacts`,
+                  values.target.reset())
+                );
+              }
+    }
+    try{
+  
+       return await addContacts({name:values.target.elements.name.value,number:values.target.elements.number.value})
+
+  
+    }
+    catch(error){
+      console.log(error)
+    }
+    finally {
+      values.target.reset();
+    }
+}
+  }
+  
   const onSubmit =  async (values)=>{
     await handleAddContacts(values);
   }
@@ -23,16 +58,15 @@ const ContactForm = ({handleAddContacts}) => {
            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
            title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
            required
-         />
-       </label>
+         /> 
+       </label> 
+       
        <button type="submit">
          Add contact
        </button>
          </form>
-   
-      
     </div>
-)}
+)}  
   
  
 export default ContactForm;
